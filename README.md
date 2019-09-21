@@ -8,9 +8,7 @@ This Gradle plugin allows your build to easily get Github Actions environment an
 
 ```kotlin
 plugins {
-    // ...
     id("org.nosphere.gradle.github.actions") version "1.0.0"
-    // ...
 }
 
 // for example:
