@@ -3,6 +3,7 @@ plugins {
     `kotlin-dsl`
     `maven-publish`
     id("com.gradle.plugin-publish") version "0.10.1"
+    id("org.nosphere.gradle.github.actions") version "1.0.0"
 }
 
 group = "org.nosphere.gradle.github"
