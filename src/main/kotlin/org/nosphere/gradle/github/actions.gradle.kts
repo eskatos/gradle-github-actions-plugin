@@ -5,10 +5,11 @@ import org.nosphere.gradle.github.actions.GithubActionsExtension
 
 val githubActions = extensions.create<GithubActionsExtension>("githubActions")
 
+
 project.afterEvaluate {
 
-    githubActions.buildScan.autoTag.disallowChanges()
-    githubActions.buildScan.autoTagPrefix.disallowChanges()
+    githubActions.buildScan.autoTag.finalizeValue()
+    githubActions.buildScan.autoTagPrefix.finalizeValue()
 
     if (githubActions.running.get()) {
 
