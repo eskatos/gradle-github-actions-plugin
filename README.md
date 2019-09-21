@@ -2,7 +2,7 @@
 
 This Gradle plugin allows your build to easily get Github Actions environment and tag Gradle Build Scans accordingly.
 
-[![Build Status](https://github.com/eskatos/gradle-github-actions-plugin/workflows/ci/badge.svg)](https://github.com/eskatos/gradle-github-actions-plugin/actions)
+[![Build Status](https://github.com/eskatos/gradle-github-actions-plugin/workflows/CI/badge.svg)](https://github.com/eskatos/gradle-github-actions-plugin/actions)
 
 ## Usage
 
