@@ -25,7 +25,7 @@ If you have the Gradle Build Scan plugin applied, or use `--scan`, your build sc
 
 ![tag](src/docs/images/build-scan-values.png "Build Scan tag")
 
-https://scans.gradle.com/s/bwsoxry3ewmno
+https://scans.gradle.com/s/o5bk2fu3zwm3y
 
 You can disable that or change the tag and values prefix:
 
