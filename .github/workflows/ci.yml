@@ -1,4 +1,4 @@
-name: Continuous Integration
+name: CI
 
 # https://help.github.com/en/articles/workflow-syntax-for-github-actions
 # https://help.github.com/en/articles/configuring-a-workflow
