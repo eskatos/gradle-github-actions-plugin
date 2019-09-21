@@ -17,6 +17,18 @@ if (isCI) {
     }
 }
 
+pluginBundle {
+    website = "https://github.com/eskatos/gradle-github-actions-plugin"
+    vcsUrl = "https://github.com/eskatos/gradle-github-actions-plugin"
+    description = "Gradle Plugin for Github Actions"
+    tags = listOf("github-actions", "scans")
+    plugins {
+        named("org.nosphere.gradle.github.actions") {
+            displayName = "Gradle Github Actions Plugin"
+        }
+    }
+}
+
 java {
     sourceCompatibility = JavaVersion.VERSION_1_6
     targetCompatibility = JavaVersion.VERSION_1_6
