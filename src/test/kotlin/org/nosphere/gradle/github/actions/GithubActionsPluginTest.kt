@@ -4,6 +4,7 @@ import org.gradle.internal.os.OperatingSystem
 import org.hamcrest.CoreMatchers.containsString
 import org.hamcrest.CoreMatchers.not
 import org.junit.Assert.assertThat
+import org.junit.Assume.assumeFalse
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -105,6 +106,9 @@ class GithubActionsPluginTest(gradleVersion: String) : AbstractPluginTest(gradle
     @Test
     fun `publishes tagged build scan by default`() {
 
+        // TODO unignore build-scans tests on windows
+        assumeFalse(isWindows)
+
         withBuildScript("""
             plugins {
                 id("org.nosphere.gradle.github.actions")
@@ -125,6 +129,9 @@ class GithubActionsPluginTest(gradleVersion: String) : AbstractPluginTest(gradle
 
     @Test
     fun `publishes untagged build scan if instructed`() {
+
+        // TODO unignore build-scans tests on windows
+        assumeFalse(isWindows)
 
         withBuildScript("""
             plugins {
