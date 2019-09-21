@@ -1,5 +1,6 @@
 package org.nosphere.gradle.github.actions
 
+import org.gradle.internal.os.OperatingSystem
 import org.hamcrest.CoreMatchers.containsString
 import org.hamcrest.CoreMatchers.not
 import org.junit.Assert.assertThat
@@ -63,14 +64,14 @@ class GithubActionsPluginTest(gradleVersion: String) : AbstractPluginTest(gradle
         """)
 
         build(githubActionEnvironment, "help") {
-            assertThat(output, containsString("home: /home/github"))
+            assertThat(output, containsString("home: $homeTestValue"))
             assertThat(output, containsString("workflow: workflow"))
             assertThat(output, containsString("action: some/action"))
             assertThat(output, containsString("actor: octocat"))
             assertThat(output, containsString("repository: octocat/hello-world"))
             assertThat(output, containsString("eventName: webhook"))
-            assertThat(output, containsString("eventPath: /github/workflow/event.json"))
-            assertThat(output, containsString("workspace: /home/runner/work/my-repo-name/my-repo-name"))
+            assertThat(output, containsString("eventPath: $eventPathTestValue"))
+            assertThat(output, containsString("workspace: $workspaceTestValue"))
             assertThat(output, containsString("sha: ffac537e6cbbf934b08745a378932722df287a53"))
             assertThat(output, containsString("ref: refs/heads/feature-branch-1."))
         }
@@ -149,16 +150,35 @@ class GithubActionsPluginTest(gradleVersion: String) : AbstractPluginTest(gradle
     val emptyEnvironment = emptyMap<String, String>()
 
     private
+    val homeTestValue =
+        if (isWindows) "C:\\Users\\github"
+        else "/home/github"
+
+    private
+    val eventPathTestValue =
+        if (isWindows) "C:\\github\\workflow\\event.json"
+        else "/github/workflow/event.json"
+
+    private
+    val workspaceTestValue =
+        if (isWindows) "C:\\Users\\runner\\work\\octocat\\hello-world"
+        else "/home/runner/work/octocat/hello-world"
+
+    private
     val githubActionEnvironment = mapOf(
-        "HOME" to "/home/github",
+        "HOME" to homeTestValue,
         "GITHUB_WORKFLOW" to "workflow",
         "GITHUB_ACTION" to "some/action",
         "GITHUB_ACTOR" to "octocat",
         "GITHUB_REPOSITORY" to "octocat/hello-world",
         "GITHUB_EVENT_NAME" to "webhook",
-        "GITHUB_EVENT_PATH" to "/github/workflow/event.json",
-        "GITHUB_WORKSPACE" to "/home/runner/work/my-repo-name/my-repo-name",
+        "GITHUB_EVENT_PATH" to eventPathTestValue,
+        "GITHUB_WORKSPACE" to workspaceTestValue,
         "GITHUB_SHA" to "ffac537e6cbbf934b08745a378932722df287a53",
         "GITHUB_REF" to "refs/heads/feature-branch-1."
     )
+
+    private
+    val isWindows
+        get() = OperatingSystem.current().isWindows
 }
