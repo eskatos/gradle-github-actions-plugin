@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "org.nosphere.gradle.github"
-version = "1.0.0-SNAPSHOT"
+version = "1.0.0"
 
 val isCI = System.getenv("CI") == "true"
 if (isCI) {
