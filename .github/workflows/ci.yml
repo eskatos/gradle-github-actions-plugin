@@ -5,14 +5,10 @@ name: Continuous Integration
 # TODO use fixed os versions
 
 on:
-
     push:
         branches:
             - master
-
     pull_request:
-        branches:
-            - master
 
 jobs:
 
@@ -24,6 +20,7 @@ jobs:
             fail-fast: false
             matrix:
                 os: [ubuntu-latest, macos-latest, windows-latest]
+                java: [1.8, 11]
 
         runs-on: ${{ matrix.os }}
 
@@ -32,10 +29,10 @@ jobs:
             - name: "git clone"
               uses: actions/checkout@v1
 
-            - name: "setup jdk 11"
+            - name: "setup jdk"
               uses: actions/setup-java@v1
               with:
-                  java-version: 11
+                  java-version: ${{ matrix.java }}
 
             - name: "./gradlew build --dry-run"
               uses: eskatos/gradle-command-action@v1
