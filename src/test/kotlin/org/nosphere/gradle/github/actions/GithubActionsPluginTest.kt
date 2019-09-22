@@ -8,6 +8,7 @@ import org.junit.Assume.assumeFalse
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
+import org.nosphere.gradle.github.AbstractPluginTest
 
 
 // Note that tests that deal with build scans don't assert the tags and custom values content
