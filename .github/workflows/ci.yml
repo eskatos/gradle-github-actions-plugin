@@ -4,11 +4,7 @@ name: CI
 # https://help.github.com/en/articles/configuring-a-workflow
 # TODO use fixed os versions
 
-on:
-    push:
-        branches:
-            - master
-    pull_request:
+on: push
 
 jobs:
 
