@@ -10,7 +10,7 @@ Also see the [Gradle Command](https://github.com/marketplace/actions/gradle-comm
 
 ```kotlin
 plugins {
-    id("org.nosphere.gradle.github.actions") version "1.0.0"
+    id("org.nosphere.gradle.github.actions") version "1.1.0"
 }
 
 // for example:
@@ -19,7 +19,7 @@ if(githubActions.running.get()) {
 }
 ```
 
-If you have the Gradle Build Scan plugin applied, or use `--scan`, your build scans will automatically be tagged `github:action` and have the following custom values attached:
+If you have the Gradle Enterprise or Gradle Build Scan plugin applied, or use `--scan`, your build scans will automatically be tagged `github:action` and have the following custom values attached:
 
 ![tag](src/docs/images/build-scan-tag.png "Build Scan tag")
 
@@ -41,3 +41,4 @@ githubActions.buildScan {
 * Minimum Java version `1.8`
 * Minimum Gradle version `5.2`
 * Minimum Build Scan version `1.1`
+
