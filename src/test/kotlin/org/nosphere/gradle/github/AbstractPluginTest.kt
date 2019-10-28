@@ -20,6 +20,7 @@ package org.nosphere.gradle.github
 
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
+import org.gradle.util.GradleVersion
 import org.junit.Before
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
@@ -36,11 +37,27 @@ abstract class AbstractPluginTest(
         @Parameterized.Parameters(name = "Gradle {0}")
         @JvmStatic
         fun testedGradleVersions() = listOf(
-            "6.0-20190920220032+0000",
-            "5.6.2",
+            "6.0-rc-1",
+            "5.6.3",
             "5.2"
         )
     }
+
+    private
+    val baseGradleVersion =
+        GradleVersion.version(gradleVersion).baseVersion
+
+    private
+    val gradleVersion60 =
+        GradleVersion.version("6.0")
+
+    protected
+    val isGradle5x =
+        baseGradleVersion < gradleVersion60
+
+    protected
+    val isGradle6x =
+        baseGradleVersion >= gradleVersion60
 
     @Rule
     @JvmField
@@ -59,6 +76,10 @@ abstract class AbstractPluginTest(
     protected
     fun withFile(path: String, text: String = "") =
         rootDir.resolve(path).writeText(text.trimIndent())
+
+    protected
+    fun withSettingsScript(text: String) =
+        withFile("settings.gradle", text)
 
     protected
     fun withBuildScript(text: String) =

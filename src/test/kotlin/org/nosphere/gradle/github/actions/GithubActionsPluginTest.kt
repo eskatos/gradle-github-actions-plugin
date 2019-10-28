@@ -14,6 +14,7 @@ import org.nosphere.gradle.github.AbstractPluginTest
 // Note that tests that deal with build scans don't assert the tags and custom values content
 // but publishes a scan so it can be checked by hand
 // TODO find out how to assert build scan tagging
+// TODO unignore build-scans tests on windows
 @RunWith(Parameterized::class)
 class GithubActionsPluginTest(gradleVersion: String) : AbstractPluginTest(gradleVersion) {
 
@@ -107,13 +108,16 @@ class GithubActionsPluginTest(gradleVersion: String) : AbstractPluginTest(gradle
     @Test
     fun `publishes tagged build scan by default`() {
 
-        // TODO unignore build-scans tests on windows
         assumeFalse(isWindows)
+
+        if (isGradle6x) {
+            withGradle6SettingsForBuildScans()
+        }
 
         withBuildScript("""
             plugins {
                 id("org.nosphere.gradle.github.actions")
-                id("com.gradle.build-scan") version "2.1"
+                ${if (isGradle5x) gradle5BuildScanPlugin else ""}
             }
             
             buildScan {
@@ -131,13 +135,16 @@ class GithubActionsPluginTest(gradleVersion: String) : AbstractPluginTest(gradle
     @Test
     fun `publishes untagged build scan if instructed`() {
 
-        // TODO unignore build-scans tests on windows
         assumeFalse(isWindows)
+
+        if (isGradle6x) {
+            withGradle6SettingsForBuildScans()
+        }
 
         withBuildScript("""
             plugins {
                 id("org.nosphere.gradle.github.actions")
-                id("com.gradle.build-scan") version "2.1"
+                ${if (isGradle5x) gradle5BuildScanPlugin else ""}
             }
             
             buildScan {
@@ -189,4 +196,17 @@ class GithubActionsPluginTest(gradleVersion: String) : AbstractPluginTest(gradle
     private
     val isWindows
         get() = OperatingSystem.current().isWindows
+
+    private
+    fun withGradle6SettingsForBuildScans() {
+        withSettingsScript("""
+                plugins {
+                    id("com.gradle.enterprise") version "3.0"
+                }
+            """)
+    }
+
+    private
+    val gradle5BuildScanPlugin: String =
+        """id("com.gradle.build-scan") version "3.0""""
 }

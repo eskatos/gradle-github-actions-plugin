@@ -1,5 +1,6 @@
 package org.nosphere.gradle.github
 
+import org.gradle.util.GradleVersion
 import org.nosphere.gradle.github.actions.GithubActionsExtension
 
 
@@ -15,18 +16,28 @@ afterEvaluate {
         githubActions.running.get() &&
         githubActions.buildScan.autoTag.getOrElse(false)
     ) {
-
-        plugins.withId("com.gradle.build-scan") {
-            val prefix = githubActions.buildScan.autoTagPrefix.getOrElse("")
-            extensions.getByName("buildScan").withGroovyBuilder {
-                "tag"("${prefix}action")
-                githubActions.buildScanValues(prefix).forEach { (name, value) ->
-                    "value"(name, value)
-                }
+        if (GradleVersion.current().baseVersion >= GradleVersion.version("6.0")) {
+            extensions.findByName("buildScan")?.let { buildScan ->
+                applyBuildScanConfiguration(buildScan)
             }
-            logger.info("Build Scan tagged with Github Actions environment")
+        } else {
+            plugins.withId("com.gradle.build-scan") {
+                applyBuildScanConfiguration(extensions.getByName("buildScan"))
+            }
         }
     }
+}
+
+
+fun applyBuildScanConfiguration(buildScanExtension: Any) {
+    val prefix = githubActions.buildScan.autoTagPrefix.getOrElse("")
+    buildScanExtension.withGroovyBuilder {
+        "tag"("${prefix}action")
+        githubActions.buildScanValues(prefix).forEach { (name, value) ->
+            "value"(name, value)
+        }
+    }
+    logger.info("Build Scan tagged with Github Actions environment")
 }
 
 
