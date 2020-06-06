@@ -1,5 +1,4 @@
 plugins {
-    `build-scan`
     `kotlin-dsl`
     `maven-publish`
     id("com.gradle.plugin-publish") version "0.12.0"
@@ -8,15 +7,6 @@ plugins {
 
 group = "org.nosphere.gradle.github"
 version = "1.2.0-SNAPSHOT"
-
-val isCI = System.getenv("CI") == "true"
-if (isCI) {
-    buildScan {
-        termsOfServiceUrl = "https://gradle.com/terms-of-service"
-        termsOfServiceAgree = "yes"
-        tag("CI")
-    }
-}
 
 pluginBundle {
     website = "https://github.com/eskatos/gradle-github-actions-plugin"
