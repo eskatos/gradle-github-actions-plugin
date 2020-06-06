@@ -168,15 +168,12 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
 
         assumeFalse(isWindows)
 
-        if (isGradle6x) {
-            withGradle6SettingsForBuildScans()
-        }
+        withSettingsForBuildScans()
 
         withBuildScript(
             """
             plugins {
                 id("org.nosphere.gradle.github.actions")
-                ${if (isGradle5x) gradle5BuildScanPlugin else ""}
             }
 
             buildScan {
@@ -197,15 +194,12 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
 
         assumeFalse(isWindows)
 
-        if (isGradle6x) {
-            withGradle6SettingsForBuildScans()
-        }
+        withSettingsForBuildScans()
 
         withBuildScript(
             """
             plugins {
                 id("org.nosphere.gradle.github.actions")
-                ${if (isGradle5x) gradle5BuildScanPlugin else ""}
             }
 
             buildScan {
@@ -260,7 +254,7 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
         get() = OperatingSystem.current().isWindows
 
     private
-    fun withGradle6SettingsForBuildScans() {
+    fun withSettingsForBuildScans() {
         withSettingsScript(
             """
                 plugins {
@@ -269,8 +263,4 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
             """
         )
     }
-
-    private
-    val gradle5BuildScanPlugin: String =
-        """id("com.gradle.build-scan") version "3.0""""
 }
