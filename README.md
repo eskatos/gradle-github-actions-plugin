@@ -39,6 +39,6 @@ githubActions.buildScan {
 ## Compatibility
 
 * Minimum Java version `1.8`
-* Minimum Gradle version `5.2`
-* Minimum Build Scan version `1.1`
+* Minimum Gradle version `6.1`
+* Minimum Build Scan version `3.0`
 

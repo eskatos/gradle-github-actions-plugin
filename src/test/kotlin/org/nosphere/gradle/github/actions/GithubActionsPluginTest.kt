@@ -16,7 +16,7 @@ import org.nosphere.gradle.github.AbstractPluginTest
 // TODO find out how to assert build scan tagging
 // TODO unignore build-scans tests on windows
 @RunWith(Parameterized::class)
-class GithubActionsPluginTest(gradleVersion: String) : AbstractPluginTest(gradleVersion) {
+class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testMatrix) {
 
     @Test
     fun `says *not* running a github action when appropriate`() {
