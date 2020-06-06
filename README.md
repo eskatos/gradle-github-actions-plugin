@@ -14,8 +14,8 @@ plugins {
 }
 
 // for example:
-if(githubActions.running.get()) {
-    val commitId = githubActions.environment.sha.get()
+if (githubActions.running.get()) {
+    println("Commit SHA: ${githubActions.environment.sha.get()}")
 }
 ```
 
