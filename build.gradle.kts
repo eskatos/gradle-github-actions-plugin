@@ -31,13 +31,13 @@ pluginBundle {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_6
-    targetCompatibility = JavaVersion.VERSION_1_6
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 kotlinDslPluginOptions {
     experimentalWarning.set(false)
-    jvmTarget.set("1.6")
+    jvmTarget.set("1.8")
 }
 
 repositories {
