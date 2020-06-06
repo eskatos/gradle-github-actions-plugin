@@ -40,8 +40,6 @@ githubActions.buildScan {
 
 | Plugin | Java | Gradle | Build Scan
 | --- | --- | --- | ---
-| `1.2.0` | `1.8` | `6.1` | `3.0`
-| `1.1.0` | `1.8` | `5.2` | `1.1`
-| `1.0.0` | `1.8` | `5.2` | `1.1`
-
-Java, Gradle and Build Scan plugin versions in the table above are the minimum required version.
+| `1.2.0` | `>= 1.8` | `>= 6.1` | `>= 3.0`
+| `1.1.0` | `>= 1.8` | `>= 5.2` | `>= 1.1`
+| `1.0.0` | `>= 1.8` | `>= 5.2` | `>= 1.1`
