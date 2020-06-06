@@ -10,7 +10,7 @@ Also see the [Gradle Command](https://github.com/marketplace/actions/gradle-comm
 
 ```kotlin
 plugins {
-    id("org.nosphere.gradle.github.actions") version "1.1.0"
+    id("org.nosphere.gradle.github.actions") version "1.2.0"
 }
 
 // for example:
