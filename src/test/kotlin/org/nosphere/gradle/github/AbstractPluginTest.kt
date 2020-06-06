@@ -28,7 +28,7 @@ import org.junit.runners.Parameterized
 import java.io.File
 
 abstract class AbstractPluginTest(
-    private val testMatrix: TestMatrix
+    protected val testMatrix: TestMatrix
 ) {
 
     companion object {

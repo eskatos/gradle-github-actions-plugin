@@ -10,7 +10,6 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import org.nosphere.gradle.github.AbstractPluginTest
 
-
 // Note that tests that deal with build scans don't assert the tags and custom values content
 // but publishes a scan so it can be checked by hand
 // TODO find out how to assert build scan tagging
@@ -21,37 +20,42 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
     @Test
     fun `says *not* running a github action when appropriate`() {
 
-        withBuildScript("""
+        withBuildScript(
+            """
             plugins {
                 id("org.nosphere.gradle.github.actions")
             }
             assert githubActions.running.get() == false
-        """)
+            """
+        )
 
-        build(emptyEnvironment, "help")
+        build(emptyEnvironment, "githubActions")
     }
 
     @Test
     fun `says running a github action when appropriate`() {
 
-        withBuildScript("""
+        withBuildScript(
+            """
             plugins {
                 id("org.nosphere.gradle.github.actions")
             }
             assert githubActions.running.get() == true
-        """)
+        """
+        )
 
-        build(githubActionEnvironment, "help")
+        build(githubActionEnvironment, "githubActions")
     }
 
     @Test
-    fun `collects github actions environment variables`() {
+    fun `can use environment at configuration time`() {
 
-        withBuildScript("""
+        withBuildScript(
+            """
             plugins {
                 id("org.nosphere.gradle.github.actions")
             }
-            
+
             githubActions.environment {
                 println("home: ${'$'}{home.get().asFile}")
                 println("workflow: ${'$'}{workflow.get()}")
@@ -64,7 +68,8 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
                 println("sha: ${'$'}{sha.get()}")
                 println("ref: ${'$'}{ref.get()}")
             }
-        """)
+        """
+        )
 
         build(githubActionEnvironment, "help") {
             assertThat(output, containsString("home: $homeTestValue"))
@@ -78,12 +83,64 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
             assertThat(output, containsString("sha: ffac537e6cbbf934b08745a378932722df287a53"))
             assertThat(output, containsString("ref: refs/heads/feature-branch-1."))
         }
+
+
+        if (testMatrix.configurationCache) {
+            build(githubActionEnvironment, "help") {
+                assertThat(output, containsString("Reusing configuration cache"))
+            }
+            build(githubActionEnvironment + ("GITHUB_ACTOR" to "tacotco"), "help") {
+                assertThat(
+                    output, containsString(
+                        "Calculating task graph as configuration cache cannot be reused " +
+                            "because environment variable 'GITHUB_ACTOR' has changed."
+                    )
+                )
+            }
+        }
+    }
+
+    @Test
+    fun `report tasks displays environment and build scan configuration`() {
+
+        withBuildScript(
+            """
+            plugins {
+                id("org.nosphere.gradle.github.actions")
+            }
+        """
+        )
+
+        build(githubActionEnvironment, "githubActions") {
+            assertThat(output, containsString("home = $homeTestValue"))
+            assertThat(output, containsString("workflow = workflow"))
+            assertThat(output, containsString("action = some/action"))
+            assertThat(output, containsString("actor = octocat"))
+            assertThat(output, containsString("repository = octocat/hello-world"))
+            assertThat(output, containsString("eventName = webhook"))
+            assertThat(output, containsString("eventPath = $eventPathTestValue"))
+            assertThat(output, containsString("workspace = $workspaceTestValue"))
+            assertThat(output, containsString("sha = ffac537e6cbbf934b08745a378932722df287a53"))
+            assertThat(output, containsString("ref = refs/heads/feature-branch-1."))
+            assertThat(output, containsString("autoTag = true"))
+            assertThat(output, containsString("autoTagPrefix = github:"))
+        }
+
+        if (testMatrix.configurationCache) {
+            build(githubActionEnvironment, "githubActions") {
+                assertThat(output, containsString("Reusing configuration cache"))
+            }
+            build(githubActionEnvironment + ("GITHUB_ACTOR" to "tacotco"), "githubActions") {
+                assertThat(output, containsString("Reusing configuration cache"))
+            }
+        }
     }
 
     @Test
     fun `environment providers absent when *not* running a github action`() {
 
-        withBuildScript("""
+        withBuildScript(
+            """
             plugins {
                 id("org.nosphere.gradle.github.actions")
             }
@@ -100,9 +157,10 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
                 assert !sha.present
                 assert !ref.present
             }
-        """)
+        """
+        )
 
-        build(emptyEnvironment, "help")
+        build(emptyEnvironment, "githubActions")
     }
 
     @Test
@@ -114,19 +172,21 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
             withGradle6SettingsForBuildScans()
         }
 
-        withBuildScript("""
+        withBuildScript(
+            """
             plugins {
                 id("org.nosphere.gradle.github.actions")
                 ${if (isGradle5x) gradle5BuildScanPlugin else ""}
             }
-            
+
             buildScan {
                 termsOfServiceUrl = "https://gradle.com/terms-of-service"
                 termsOfServiceAgree = "yes"
             }
-        """)
+        """
+        )
 
-        build(githubActionEnvironment, "help", "--scan", "-i") {
+        build(githubActionEnvironment, "githubActions", "--scan", "-i") {
             println(output)
             assertThat(output, containsString("Build Scan tagged with Github Actions environment"))
         }
@@ -141,21 +201,23 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
             withGradle6SettingsForBuildScans()
         }
 
-        withBuildScript("""
+        withBuildScript(
+            """
             plugins {
                 id("org.nosphere.gradle.github.actions")
                 ${if (isGradle5x) gradle5BuildScanPlugin else ""}
             }
-            
+
             buildScan {
                 termsOfServiceUrl = "https://gradle.com/terms-of-service"
                 termsOfServiceAgree = "yes"
             }
-            
-            githubActions.buildScan.autoTag.set(false)
-        """)
 
-        build(githubActionEnvironment, "help", "--scan", "-i") {
+            githubActions.buildScan.autoTag.set(false)
+        """
+        )
+
+        build(githubActionEnvironment, "githubActions", "--scan", "-i") {
             println(output)
             assertThat(output, not(containsString("Build Scan tagged with Github Actions environment")))
         }
@@ -199,11 +261,13 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
 
     private
     fun withGradle6SettingsForBuildScans() {
-        withSettingsScript("""
+        withSettingsScript(
+            """
                 plugins {
                     id("com.gradle.enterprise") version "3.0"
                 }
-            """)
+            """
+        )
     }
 
     private

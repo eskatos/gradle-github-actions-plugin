@@ -2,10 +2,14 @@ package org.nosphere.gradle.github
 
 import org.gradle.util.GradleVersion
 import org.nosphere.gradle.github.actions.GithubActionsExtension
-
+import org.nosphere.gradle.github.actions.GithubActionsReport
 
 val githubActions = extensions.create<GithubActionsExtension>("githubActions")
 
+tasks.register<GithubActionsReport>("githubActions", githubActions).configure {
+    group = HelpTasksPlugin.HELP_GROUP
+    description = "Displays the GitHub Actions configuration and environment"
+}
 
 afterEvaluate {
 
@@ -39,7 +43,6 @@ fun applyBuildScanConfiguration(buildScanExtension: Any) {
     }
     logger.info("Build Scan tagged with Github Actions environment")
 }
-
 
 fun GithubActionsExtension.buildScanValues(prefix: String): Map<String, String> {
     val providerByName = mapOf(
