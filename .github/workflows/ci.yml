@@ -1,10 +1,6 @@
 name: CI
 
-# https://help.github.com/en/articles/workflow-syntax-for-github-actions
-# https://help.github.com/en/articles/configuring-a-workflow
-# TODO use fixed os versions
-
-on: push
+on: [ push, pull_request ]
 
 jobs:
 
@@ -13,36 +9,28 @@ jobs:
         name: "Check"
 
         strategy:
-            fail-fast: false
+            fail-fast: true
             matrix:
-                os: [ubuntu-latest, macos-latest, windows-latest]
-                java: [1.8, 11]
+                os: [ ubuntu-latest, macos-latest, windows-latest ]
 
         runs-on: ${{ matrix.os }}
 
         steps:
 
-            - name: "git clone"
-              uses: actions/checkout@v1
+            -   name: "git clone"
+                uses: actions/checkout@v1
 
-            - name: "setup jdk"
-              uses: actions/setup-java@v1
-              with:
-                  java-version: ${{ matrix.java }}
+            -   name: "setup jdk"
+                uses: actions/setup-java@v1
+                with:
+                    java-version: 1.8
 
-            - name: "./gradlew build --dry-run"
-              uses: eskatos/gradle-command-action@v1
-              with:
-                  arguments: --scan --no-build-cache build --dry-run
-              env:
-                  CI: true
+            -   name: "./gradlew build"
+                uses: eskatos/gradle-command-action@v1
+                with:
+                    arguments: --scan --no-build-cache build
+                env:
+                    CI: true
 
-            - name: "./gradlew build"
-              uses: eskatos/gradle-command-action@v1
-              with:
-                  arguments: --scan --no-build-cache build
-              env:
-                  CI: true
-
-            - name: "git diff --exit-code"
-              run: git diff --exit-code
+            -   name: "git diff --exit-code"
+                run: git diff --exit-code
