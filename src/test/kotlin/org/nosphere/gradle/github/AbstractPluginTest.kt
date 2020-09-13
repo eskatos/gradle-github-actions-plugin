@@ -35,8 +35,8 @@ abstract class AbstractPluginTest(
         @Parameterized.Parameters(name = "{0}")
         @JvmStatic
         fun testMatrix() = listOf(
-            TestMatrix("6.5", true),
-            TestMatrix("6.5", false),
+            TestMatrix("6.6.1", true),
+            TestMatrix("6.6.1", false),
             TestMatrix("6.1", false)
         )
     }
@@ -109,7 +109,7 @@ abstract class AbstractPluginTest(
         get() = sequence {
             yield("-s")
             if (testMatrix.configurationCache) {
-                yield("--configuration-cache=on")
+                yield("--configuration-cache")
             }
         }
 
