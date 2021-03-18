@@ -35,8 +35,8 @@ abstract class AbstractPluginTest(
         @Parameterized.Parameters(name = "{0}")
         @JvmStatic
         fun testMatrix() = listOf(
-            TestMatrix("6.6.1", true),
-            TestMatrix("6.6.1", false),
+            TestMatrix("7.0-milestone-3", true),
+            TestMatrix("6.8.3", true),
             TestMatrix("6.1", false)
         )
     }
