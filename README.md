@@ -2,7 +2,7 @@
 
 This Gradle plugin allows your build to easily get Github Actions environment and tag Gradle Build Scans accordingly.
 
-Also see the [Gradle Command](https://github.com/marketplace/actions/gradle-command) Github Action that allows to execute Gradle commands.
+Also see the [Gradle Command](https://github.com/marketplace/actions/gradle-build-action) Github Action that allows to execute Gradle commands.
 
 [![Build Status](https://github.com/eskatos/gradle-github-actions-plugin/workflows/CI/badge.svg)](https://github.com/eskatos/gradle-github-actions-plugin/actions)
 
