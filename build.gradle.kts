@@ -39,9 +39,9 @@ dependencies {
     testImplementation(gradleTestKit())
 }
 
-tasks.validateTaskProperties {
-    failOnWarning = true
-    enableStricterValidation = true
+tasks.validatePlugins {
+    failOnWarning.set(true)
+    enableStricterValidation.set(true)
 }
 
 val sourcesJar by tasks.registering(Jar::class) {
