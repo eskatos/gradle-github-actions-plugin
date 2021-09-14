@@ -1,7 +1,7 @@
 plugins {
     `kotlin-dsl`
     `maven-publish`
-    id("com.gradle.plugin-publish") version "0.12.0"
+    id("com.gradle.plugin-publish") version "0.15.0"
     id("org.nosphere.gradle.github.actions") version "1.2.0"
 }
 
