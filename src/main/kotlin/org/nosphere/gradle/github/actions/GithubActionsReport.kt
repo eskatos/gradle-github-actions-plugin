@@ -46,5 +46,5 @@ abstract class GithubActionsReport @Inject internal constructor(
 
     private
     val Provider<*>.displayValue: String
-        get() = map(Any::toString).getOrElse("<absent>")
+        get() = map { it.toString() }.getOrElse("<absent>")
 }
