@@ -3,8 +3,10 @@ package org.nosphere.gradle.github.actions
 import org.gradle.api.DefaultTask
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.TaskAction
+import org.gradle.work.DisableCachingByDefault
 import javax.inject.Inject
 
+@DisableCachingByDefault
 abstract class GithubActionsReport @Inject internal constructor(
 
     private
