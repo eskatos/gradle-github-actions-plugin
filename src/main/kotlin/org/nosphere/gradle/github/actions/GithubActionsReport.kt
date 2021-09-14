@@ -25,7 +25,11 @@ abstract class GithubActionsReport @Inject internal constructor(
                 environment {
                     home = ${env.home.displayValue}
                     workflow = ${env.workflow.displayValue}
+                    runId = ${env.runId.displayValue}
+                    runNumber = ${env.runNumber.displayValue}
+                    jobId = ${env.jobId.displayValue}
                     action = ${env.action.displayValue}
+                    actionPath = ${env.actionPath.displayValue}
                     actor = ${env.actor.displayValue}
                     repository = ${env.repository.displayValue}
                     eventName = ${env.eventName.displayValue}
@@ -33,6 +37,14 @@ abstract class GithubActionsReport @Inject internal constructor(
                     workspace = ${env.workspace.displayValue}
                     sha = ${env.sha.displayValue}
                     ref = ${env.ref.displayValue}
+                    headRef = ${env.headRef.displayValue}
+                    baseRef = ${env.baseRef.displayValue}
+                    serverUrl = ${env.serverUrl.displayValue}
+                    apiUrl = ${env.apiUrl.displayValue}
+                    graphqlUrl = ${env.graphqlUrl.displayValue}
+                    runnerOs = ${env.runnerOs.displayValue}
+                    runnerTemp = ${env.runnerTemp.displayValue}
+                    runnerToolCache = ${env.runnerToolCache.displayValue}
                 }
                 buildScan {
                     autoTag = ${githubActions.buildScan.autoTag.displayValue}

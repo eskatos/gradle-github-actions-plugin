@@ -56,7 +56,11 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
             githubActions.environment {
                 println("home: ${'$'}{home.get().asFile}")
                 println("workflow: ${'$'}{workflow.get()}")
+                println("runId: ${'$'}{runId.get()}")
+                println("runNumber: ${'$'}{runNumber.get()}")
+                println("jobId: ${'$'}{jobId.get()}")
                 println("action: ${'$'}{action.get()}")
+                println("actionPath: ${'$'}{actionPath.get()}")
                 println("actor: ${'$'}{actor.get()}")
                 println("repository: ${'$'}{repository.get()}")
                 println("eventName: ${'$'}{eventName.get()}")
@@ -64,6 +68,14 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
                 println("workspace: ${'$'}{workspace.get().asFile}")
                 println("sha: ${'$'}{sha.get()}")
                 println("ref: ${'$'}{ref.get()}")
+                println("headRef: ${'$'}{headRef.get()}")
+                println("baseRef: ${'$'}{baseRef.get()}")
+                println("serverUrl: ${'$'}{serverUrl.get()}")
+                println("apiUrl: ${'$'}{apiUrl.get()}")
+                println("graphqlUrl: ${'$'}{graphqlUrl.get()}")
+                println("runnerOs: ${'$'}{runnerOs.get()}")
+                println("runnerTemp: ${'$'}{runnerTemp.get()}")
+                println("runnerToolCache: ${'$'}{runnerToolCache.get()}")
             }
         """
         )
@@ -71,7 +83,11 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
         build(githubActionEnvironment, "help") {
             outputContains("home: $homeTestValue")
             outputContains("workflow: workflow")
+            outputContains("runId: my-run-id")
+            outputContains("runNumber: 42")
+            outputContains("jobId: my-job-id")
             outputContains("action: some/action")
+            outputContains("actionPath: $actionPathTestValue")
             outputContains("actor: octocat")
             outputContains("repository: octocat/hello-world")
             outputContains("eventName: webhook")
@@ -79,6 +95,14 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
             outputContains("workspace: $workspaceTestValue")
             outputContains("sha: ffac537e6cbbf934b08745a378932722df287a53")
             outputContains("ref: refs/heads/feature-branch-1.")
+            outputContains("headRef: feature-branch-1")
+            outputContains("baseRef: master")
+            outputContains("serverUrl: https://github.com")
+            outputContains("apiUrl: https://api.github.com")
+            outputContains("graphqlUrl: https://api.github.com/graphql")
+            outputContains("runnerOs: Linux")
+            outputContains("runnerTemp: $runnerTempTestValue")
+            outputContains("runnerToolCache: $runnerToolCacheTestValue")
         }
 
 
@@ -109,7 +133,11 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
         build(githubActionEnvironment, "githubActions") {
             outputContains("home = $homeTestValue")
             outputContains("workflow = workflow")
+            outputContains("runId = my-run-id")
+            outputContains("runNumber = 42")
+            outputContains("jobId = my-job-id")
             outputContains("action = some/action")
+            outputContains("actionPath = $actionPathTestValue")
             outputContains("actor = octocat")
             outputContains("repository = octocat/hello-world")
             outputContains("eventName = webhook")
@@ -117,6 +145,14 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
             outputContains("workspace = $workspaceTestValue")
             outputContains("sha = ffac537e6cbbf934b08745a378932722df287a53")
             outputContains("ref = refs/heads/feature-branch-1.")
+            outputContains("headRef = feature-branch-1")
+            outputContains("baseRef = master")
+            outputContains("serverUrl = https://github.com")
+            outputContains("apiUrl = https://api.github.com")
+            outputContains("graphqlUrl = https://api.github.com/graphql")
+            outputContains("runnerOs = Linux")
+            outputContains("runnerTemp = $runnerTempTestValue")
+            outputContains("runnerToolCache = $runnerToolCacheTestValue")
             outputContains("autoTag = true")
             outputContains("autoTagPrefix = github:")
         }
@@ -143,7 +179,11 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
             githubActions.environment {
                 assert !home.present
                 assert !workflow.present
+                assert !runId.present
+                assert !runNumber.present
+                assert !jobId.present
                 assert !action.present
+                assert !actionPath.present
                 assert !actor.present
                 assert !repository.present
                 assert !eventName.present
@@ -151,6 +191,14 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
                 assert !workspace.present
                 assert !sha.present
                 assert !ref.present
+                assert !headRef.present
+                assert !baseRef.present
+                assert !serverUrl.present
+                assert !apiUrl.present
+                assert !graphqlUrl.present
+                assert !runnerOs.present
+                assert !runnerTemp.present
+                assert !runnerToolCache.present
             }
         """
         )
@@ -221,6 +269,11 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
         else "/home/github"
 
     private
+    val actionPathTestValue =
+        if (isWindows) "C:\\Users\\runner\\action"
+        else "/home/runner/action"
+
+    private
     val eventPathTestValue =
         if (isWindows) "C:\\github\\workflow\\event.json"
         else "/github/workflow/event.json"
@@ -231,17 +284,39 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
         else "/home/runner/work/octocat/hello-world"
 
     private
+    val runnerTempTestValue =
+        if (isWindows) "C:\\Users\\runner\\temp"
+        else "/home/runner/temp"
+
+    private
+    val runnerToolCacheTestValue =
+        if (isWindows) "C:\\Users\\runner\\tool-cache"
+        else "/home/runner/tool-cache"
+
+    private
     val githubActionEnvironment = mapOf(
         "HOME" to homeTestValue,
         "GITHUB_WORKFLOW" to "workflow",
+        "GITHUB_RUN_ID" to "my-run-id",
+        "GITHUB_RUN_NUMBER" to "42",
+        "GITHUB_JOB" to "my-job-id",
         "GITHUB_ACTION" to "some/action",
+        "GITHUB_ACTION_PATH" to actionPathTestValue,
         "GITHUB_ACTOR" to "octocat",
         "GITHUB_REPOSITORY" to "octocat/hello-world",
         "GITHUB_EVENT_NAME" to "webhook",
         "GITHUB_EVENT_PATH" to eventPathTestValue,
         "GITHUB_WORKSPACE" to workspaceTestValue,
         "GITHUB_SHA" to "ffac537e6cbbf934b08745a378932722df287a53",
-        "GITHUB_REF" to "refs/heads/feature-branch-1."
+        "GITHUB_REF" to "refs/heads/feature-branch-1.",
+        "GITHUB_HEAD_REF" to "feature-branch-1",
+        "GITHUB_BASE_REF" to "master",
+        "GITHUB_SERVER_URL" to "https://github.com",
+        "GITHUB_API_URL" to "https://api.github.com",
+        "GITHUB_GRAPHQL_URL" to "https://api.github.com/graphql",
+        "RUNNER_OS" to "Linux",
+        "RUNNER_TEMP" to runnerTempTestValue,
+        "RUNNER_TOOL_CACHE" to runnerToolCacheTestValue,
     )
 
     private

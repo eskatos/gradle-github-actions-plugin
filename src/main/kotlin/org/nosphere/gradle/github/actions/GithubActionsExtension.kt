@@ -43,7 +43,7 @@ class GithubActionsBuildScan internal constructor(objects: ObjectFactory) {
 }
 
 /**
- * https://help.github.com/en/articles/virtual-environments-for-github-actions#default-environment-variables
+ * https://docs.github.com/en/actions/reference/environment-variables#default-environment-variables
  */
 class GithubActionsEnvironment internal constructor(
     private val providers: ProviderFactory,
@@ -52,7 +52,11 @@ class GithubActionsEnvironment internal constructor(
 
     val home: Provider<Directory> = envDirectory("HOME")
     val workflow: Provider<String> = envString("GITHUB_WORKFLOW")
+    val runId: Provider<String> = envString("GITHUB_RUN_ID")
+    val runNumber: Provider<String> = envString("GITHUB_RUN_NUMBER")
+    val jobId: Provider<String> = envString("GITHUB_JOB")
     val action: Provider<String> = envString("GITHUB_ACTION")
+    val actionPath: Provider<Directory> = envDirectory("GITHUB_ACTION_PATH")
     val actor: Provider<String> = envString("GITHUB_ACTOR")
     val repository: Provider<String> = envString("GITHUB_REPOSITORY")
     val eventName: Provider<String> = envString("GITHUB_EVENT_NAME")
@@ -60,6 +64,14 @@ class GithubActionsEnvironment internal constructor(
     val workspace: Provider<Directory> = envDirectory("GITHUB_WORKSPACE")
     val sha: Provider<String> = envString("GITHUB_SHA")
     val ref: Provider<String> = envString("GITHUB_REF")
+    val headRef: Provider<String> = envString("GITHUB_HEAD_REF")
+    val baseRef: Provider<String> = envString("GITHUB_BASE_REF")
+    val serverUrl: Provider<String> = envString("GITHUB_SERVER_URL")
+    val apiUrl: Provider<String> = envString("GITHUB_API_URL")
+    val graphqlUrl: Provider<String> = envString("GITHUB_GRAPHQL_URL")
+    val runnerOs: Provider<String> = envString("RUNNER_OS")
+    val runnerTemp: Provider<Directory> = envDirectory("RUNNER_TEMP")
+    val runnerToolCache: Provider<Directory> = envDirectory("RUNNER_TOOL_CACHE")
 
     private
     fun envString(env: String) =
