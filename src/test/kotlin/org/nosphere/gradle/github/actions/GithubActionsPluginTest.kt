@@ -1,9 +1,6 @@
 package org.nosphere.gradle.github.actions
 
 import org.gradle.internal.os.OperatingSystem
-import org.hamcrest.CoreMatchers.containsString
-import org.hamcrest.CoreMatchers.not
-import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Assume.assumeFalse
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -72,29 +69,27 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
         )
 
         build(githubActionEnvironment, "help") {
-            assertThat(output, containsString("home: $homeTestValue"))
-            assertThat(output, containsString("workflow: workflow"))
-            assertThat(output, containsString("action: some/action"))
-            assertThat(output, containsString("actor: octocat"))
-            assertThat(output, containsString("repository: octocat/hello-world"))
-            assertThat(output, containsString("eventName: webhook"))
-            assertThat(output, containsString("eventPath: $eventPathTestValue"))
-            assertThat(output, containsString("workspace: $workspaceTestValue"))
-            assertThat(output, containsString("sha: ffac537e6cbbf934b08745a378932722df287a53"))
-            assertThat(output, containsString("ref: refs/heads/feature-branch-1."))
+            outputContains("home: $homeTestValue")
+            outputContains("workflow: workflow")
+            outputContains("action: some/action")
+            outputContains("actor: octocat")
+            outputContains("repository: octocat/hello-world")
+            outputContains("eventName: webhook")
+            outputContains("eventPath: $eventPathTestValue")
+            outputContains("workspace: $workspaceTestValue")
+            outputContains("sha: ffac537e6cbbf934b08745a378932722df287a53")
+            outputContains("ref: refs/heads/feature-branch-1.")
         }
 
 
         if (testMatrix.configurationCache) {
             build(githubActionEnvironment, "help") {
-                assertThat(output, containsString("Reusing configuration cache"))
+                outputContains("Reusing configuration cache")
             }
             build(githubActionEnvironment + ("GITHUB_ACTOR" to "tacotco"), "help") {
-                assertThat(
-                    output, containsString(
-                        "Calculating task graph as configuration cache cannot be reused " +
-                            "because environment variable 'GITHUB_ACTOR' has changed."
-                    )
+                outputContains(
+                    "Calculating task graph as configuration cache cannot be reused " +
+                        "because environment variable 'GITHUB_ACTOR' has changed."
                 )
             }
         }
@@ -112,26 +107,26 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
         )
 
         build(githubActionEnvironment, "githubActions") {
-            assertThat(output, containsString("home = $homeTestValue"))
-            assertThat(output, containsString("workflow = workflow"))
-            assertThat(output, containsString("action = some/action"))
-            assertThat(output, containsString("actor = octocat"))
-            assertThat(output, containsString("repository = octocat/hello-world"))
-            assertThat(output, containsString("eventName = webhook"))
-            assertThat(output, containsString("eventPath = $eventPathTestValue"))
-            assertThat(output, containsString("workspace = $workspaceTestValue"))
-            assertThat(output, containsString("sha = ffac537e6cbbf934b08745a378932722df287a53"))
-            assertThat(output, containsString("ref = refs/heads/feature-branch-1."))
-            assertThat(output, containsString("autoTag = true"))
-            assertThat(output, containsString("autoTagPrefix = github:"))
+            outputContains("home = $homeTestValue")
+            outputContains("workflow = workflow")
+            outputContains("action = some/action")
+            outputContains("actor = octocat")
+            outputContains("repository = octocat/hello-world")
+            outputContains("eventName = webhook")
+            outputContains("eventPath = $eventPathTestValue")
+            outputContains("workspace = $workspaceTestValue")
+            outputContains("sha = ffac537e6cbbf934b08745a378932722df287a53")
+            outputContains("ref = refs/heads/feature-branch-1.")
+            outputContains("autoTag = true")
+            outputContains("autoTagPrefix = github:")
         }
 
         if (testMatrix.configurationCache) {
             build(githubActionEnvironment, "githubActions") {
-                assertThat(output, containsString("Reusing configuration cache"))
+                outputContains("Reusing configuration cache")
             }
             build(githubActionEnvironment + ("GITHUB_ACTOR" to "tacotco"), "githubActions") {
-                assertThat(output, containsString("Reusing configuration cache"))
+                outputContains("Reusing configuration cache")
             }
         }
     }
@@ -185,7 +180,7 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
 
         build(githubActionEnvironment, "githubActions", "--scan", "-i") {
             println(output)
-            assertThat(output, containsString("Build Scan tagged with Github Actions environment"))
+            outputContains("Build Scan tagged with Github Actions environment")
         }
     }
 
@@ -213,7 +208,7 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
 
         build(githubActionEnvironment, "githubActions", "--scan", "-i") {
             println(output)
-            assertThat(output, not(containsString("Build Scan tagged with Github Actions environment")))
+            outputDoesNotContain("Build Scan tagged with Github Actions environment")
         }
     }
 

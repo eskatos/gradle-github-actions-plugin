@@ -20,6 +20,9 @@ package org.nosphere.gradle.github
 
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
+import org.hamcrest.CoreMatchers.containsString
+import org.hamcrest.CoreMatchers.not
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
@@ -116,4 +119,12 @@ abstract class AbstractPluginTest(
     protected
     fun BuildResult.outcomeOf(path: String) =
         task(path)?.outcome
+
+    protected
+    fun BuildResult.outputContains(substring: String) =
+        assertThat(output, containsString(substring))
+
+    protected
+    fun BuildResult.outputDoesNotContain(substring: String) =
+        assertThat(output, not(containsString(substring)))
 }
