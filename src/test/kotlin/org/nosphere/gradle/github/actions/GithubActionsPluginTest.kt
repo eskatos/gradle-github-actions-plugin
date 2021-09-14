@@ -18,7 +18,7 @@ import org.nosphere.gradle.github.AbstractPluginTest
 class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testMatrix) {
 
     @Test
-    fun `says *not* running a github action when appropriate`() {
+    fun `says _not_ running a github action when appropriate`() {
 
         withBuildScript(
             """
@@ -137,7 +137,7 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
     }
 
     @Test
-    fun `environment providers absent when *not* running a github action`() {
+    fun `environment providers absent when _not_ running a github action`() {
 
         withBuildScript(
             """
