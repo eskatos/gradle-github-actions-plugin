@@ -31,7 +31,6 @@ fun applyBuildScanConfiguration(buildScanExtension: Any) {
     val prefix = githubActions.buildScan.autoTagPrefix.getOrElse("")
     val buildScanValues = githubActions.buildScanValues(prefix)
     val runUrl = githubActions.derived.runUrl
-    val jobUrl = githubActions.derived.jobUrl
 
     val log = logger
 
@@ -48,7 +47,6 @@ fun applyBuildScanConfiguration(buildScanExtension: Any) {
                 valueMethod.invoke(buildScanExtension, name, valueProvider.get())
             }
             linkMethod.invoke(buildScanExtension, "${prefix}run", runUrl.get())
-            linkMethod.invoke(buildScanExtension, "${prefix}job", jobUrl.get())
             log.info("Build Scan tagged with Github Actions environment")
         }
     })

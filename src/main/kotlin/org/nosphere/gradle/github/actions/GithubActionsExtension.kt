@@ -112,17 +112,4 @@ class GithubActionsDerived internal constructor(
                 }
             }
         }
-
-    val jobUrl: Provider<String>
-        get() {
-            return if (GradleVersion.current().baseVersion >= GradleVersion.version("6.6")) {
-                env.serverUrl
-                    .zip(env.repository) { url, repo -> "$url/$repo/runs" }
-                    .zip(env.jobId) { url, job -> "$url/$job" }
-            } else {
-                providers.provider {
-                    "${env.serverUrl.get()}/${env.repository.get()}/runs/${env.jobId.get()}"
-                }
-            }
-        }
 }
