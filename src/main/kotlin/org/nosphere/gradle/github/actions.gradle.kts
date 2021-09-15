@@ -33,6 +33,8 @@ fun applyBuildScanConfiguration(buildScanExtension: Any) {
         githubActions.buildScanValues(prefix).forEach { (name, value) ->
             "value"(name, value)
         }
+        "link"("${prefix}run", githubActions.derived.runUrl.get())
+        "link"("${prefix}job", githubActions.derived.jobUrl.get())
     }
     logger.info("Build Scan tagged with Github Actions environment")
 }

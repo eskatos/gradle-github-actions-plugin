@@ -27,6 +27,8 @@ open class GithubActionsExtension @Inject internal constructor(
     fun environment(action: Action<in GithubActionsEnvironment>) =
         action.execute(environment)
 
+    val derived = GithubActionsDerived(environment, providers)
+
     val buildScan = GithubActionsBuildScan(objects)
 
     fun buildScan(action: Action<in GithubActionsBuildScan>) =
@@ -91,5 +93,36 @@ class GithubActionsEnvironment internal constructor(
     fun envFile(env: String) =
         envString(env).flatMap { value ->
             layout.file(providers.provider { File(value) })
+        }
+}
+
+class GithubActionsDerived internal constructor(
+    private val env: GithubActionsEnvironment,
+    private val providers: ProviderFactory,
+) {
+    val runUrl: Provider<String>
+        get() {
+            return if (GradleVersion.current().baseVersion >= GradleVersion.version("6.6")) {
+                env.serverUrl
+                    .zip(env.repository) { url, repo -> "$url/$repo/actions/runs" }
+                    .zip(env.runId) { url, run -> "$url/$run" }
+            } else {
+                providers.provider {
+                    "${env.serverUrl.get()}/${env.repository.get()}/actions/runs/${env.runId.get()}"
+                }
+            }
+        }
+
+    val jobUrl: Provider<String>
+        get() {
+            return if (GradleVersion.current().baseVersion >= GradleVersion.version("6.6")) {
+                env.serverUrl
+                    .zip(env.repository) { url, repo -> "$url/$repo/runs" }
+                    .zip(env.jobId) { url, job -> "$url/$job" }
+            } else {
+                providers.provider {
+                    "${env.serverUrl.get()}/${env.repository.get()}/runs/${env.jobId.get()}"
+                }
+            }
         }
 }
