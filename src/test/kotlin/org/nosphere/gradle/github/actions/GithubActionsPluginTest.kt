@@ -232,6 +232,22 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
             println(output)
             outputContains("Build Scan tagged with Github Actions environment")
         }
+
+        if (testMatrix.configurationCache) {
+            build(githubActionEnvironment, "githubActions", "--scan", "-i") {
+                println(output)
+                outputContains("Reusing configuration cache")
+            }
+            changeEnvironment()
+            build(githubActionEnvironment, "githubActions", "--scan", "-i") {
+                println(output)
+                // TODO change implementation to not invalidate CC on environment change!
+                outputContains(
+                    "Calculating task graph as configuration cache cannot be reused " +
+                        "because environment variable 'GITHUB_RUN_ID' has changed."
+                )
+            }
+        }
     }
 
     @Test
