@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "org.nosphere.gradle.github"
-version = "1.3.0-SNAPSHOT"
+version = "1.3.0"
 
 pluginBundle {
     website = "https://github.com/eskatos/gradle-github-actions-plugin"
