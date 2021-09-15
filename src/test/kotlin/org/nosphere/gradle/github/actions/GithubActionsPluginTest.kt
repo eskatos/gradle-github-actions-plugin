@@ -83,9 +83,9 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
         build(githubActionEnvironment, "help") {
             outputContains("home: $homeTestValue")
             outputContains("workflow: workflow")
-            outputContains("runId: my-run-id")
-            outputContains("runNumber: 42")
-            outputContains("jobId: my-job-id")
+            outputContains("runId: $runIdTestValue")
+            outputContains("runNumber: $runNumberTestValue")
+            outputContains("jobId: $jobIdTestValue")
             outputContains("action: some/action")
             outputContains("actionPath: $actionPathTestValue")
             outputContains("actor: octocat")
@@ -110,10 +110,11 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
             build(githubActionEnvironment, "help") {
                 outputContains("Reusing configuration cache")
             }
-            build(githubActionEnvironment + ("GITHUB_ACTOR" to "tacotco"), "help") {
+            changeEnvironment()
+            build(githubActionEnvironment, "help") {
                 outputContains(
                     "Calculating task graph as configuration cache cannot be reused " +
-                        "because environment variable 'GITHUB_ACTOR' has changed."
+                        "because environment variable 'GITHUB_RUN_ID' has changed."
                 )
             }
         }
@@ -133,9 +134,9 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
         build(githubActionEnvironment, "githubActions") {
             outputContains("home = $homeTestValue")
             outputContains("workflow = workflow")
-            outputContains("runId = my-run-id")
-            outputContains("runNumber = 42")
-            outputContains("jobId = my-job-id")
+            outputContains("runId = $runIdTestValue")
+            outputContains("runNumber = $runNumberTestValue")
+            outputContains("jobId = $jobIdTestValue")
             outputContains("action = some/action")
             outputContains("actionPath = $actionPathTestValue")
             outputContains("actor = octocat")
@@ -161,7 +162,8 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
             build(githubActionEnvironment, "githubActions") {
                 outputContains("Reusing configuration cache")
             }
-            build(githubActionEnvironment + ("GITHUB_ACTOR" to "tacotco"), "githubActions") {
+            changeEnvironment()
+            build(githubActionEnvironment, "githubActions") {
                 outputContains("Reusing configuration cache")
             }
         }
@@ -264,6 +266,22 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
     val emptyEnvironment = emptyMap<String, String>()
 
     private
+    var runIdTestValue = "my-run-id"
+
+    private
+    var runNumberTestValue = "23"
+
+    private
+    var jobIdTestValue = "my-job-id"
+
+    private
+    fun changeEnvironment() {
+        runIdTestValue = "my-other-run-id"
+        runNumberTestValue = "42"
+        jobIdTestValue = "my-other-job-id"
+    }
+
+    private
     val homeTestValue =
         if (isWindows) "C:\\Users\\github"
         else "/home/github"
@@ -294,30 +312,31 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
         else "/home/runner/tool-cache"
 
     private
-    val githubActionEnvironment = mapOf(
-        "HOME" to homeTestValue,
-        "GITHUB_WORKFLOW" to "workflow",
-        "GITHUB_RUN_ID" to "my-run-id",
-        "GITHUB_RUN_NUMBER" to "42",
-        "GITHUB_JOB" to "my-job-id",
-        "GITHUB_ACTION" to "some/action",
-        "GITHUB_ACTION_PATH" to actionPathTestValue,
-        "GITHUB_ACTOR" to "octocat",
-        "GITHUB_REPOSITORY" to "octocat/hello-world",
-        "GITHUB_EVENT_NAME" to "webhook",
-        "GITHUB_EVENT_PATH" to eventPathTestValue,
-        "GITHUB_WORKSPACE" to workspaceTestValue,
-        "GITHUB_SHA" to "ffac537e6cbbf934b08745a378932722df287a53",
-        "GITHUB_REF" to "refs/heads/feature-branch-1.",
-        "GITHUB_HEAD_REF" to "feature-branch-1",
-        "GITHUB_BASE_REF" to "master",
-        "GITHUB_SERVER_URL" to "https://github.com",
-        "GITHUB_API_URL" to "https://api.github.com",
-        "GITHUB_GRAPHQL_URL" to "https://api.github.com/graphql",
-        "RUNNER_OS" to "Linux",
-        "RUNNER_TEMP" to runnerTempTestValue,
-        "RUNNER_TOOL_CACHE" to runnerToolCacheTestValue,
-    )
+    val githubActionEnvironment
+        get() = mapOf(
+            "HOME" to homeTestValue,
+            "GITHUB_WORKFLOW" to "workflow",
+            "GITHUB_RUN_ID" to runIdTestValue,
+            "GITHUB_RUN_NUMBER" to runNumberTestValue,
+            "GITHUB_JOB" to jobIdTestValue,
+            "GITHUB_ACTION" to "some/action",
+            "GITHUB_ACTION_PATH" to actionPathTestValue,
+            "GITHUB_ACTOR" to "octocat",
+            "GITHUB_REPOSITORY" to "octocat/hello-world",
+            "GITHUB_EVENT_NAME" to "webhook",
+            "GITHUB_EVENT_PATH" to eventPathTestValue,
+            "GITHUB_WORKSPACE" to workspaceTestValue,
+            "GITHUB_SHA" to "ffac537e6cbbf934b08745a378932722df287a53",
+            "GITHUB_REF" to "refs/heads/feature-branch-1.",
+            "GITHUB_HEAD_REF" to "feature-branch-1",
+            "GITHUB_BASE_REF" to "master",
+            "GITHUB_SERVER_URL" to "https://github.com",
+            "GITHUB_API_URL" to "https://api.github.com",
+            "GITHUB_GRAPHQL_URL" to "https://api.github.com/graphql",
+            "RUNNER_OS" to "Linux",
+            "RUNNER_TEMP" to runnerTempTestValue,
+            "RUNNER_TOOL_CACHE" to runnerToolCacheTestValue,
+        )
 
     private
     val isWindows
