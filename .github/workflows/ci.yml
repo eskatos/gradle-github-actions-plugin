@@ -29,8 +29,6 @@ jobs:
                 uses: gradle/gradle-build-action@v2.0-beta.1
                 with:
                     arguments: --scan build
-                    distributions-cache-enabled: true
-                    dependencies-cache-enabled: true
                 env:
                     CI: true
 
