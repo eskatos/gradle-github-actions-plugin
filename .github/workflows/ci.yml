@@ -26,7 +26,7 @@ jobs:
                     java-version: 1.8
 
             -   name: "./gradlew build"
-                uses: gradle/gradle-build-action@v1
+                uses: gradle/gradle-build-action@v2.0-beta.1
                 with:
                     arguments: --scan build
                     distributions-cache-enabled: true
