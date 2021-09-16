@@ -19,11 +19,11 @@ if (githubActions.running.get()) {
 }
 ```
 
-If you have the Gradle Enterprise or Gradle Build Scan plugin applied, or use `--scan`, your build scans will automatically be tagged `github:action` and have the following custom values attached:
+If you have the Gradle Enterprise or Gradle Build Scan plugin applied, or use `--scan`, your build scans will automatically be tagged `github:action`, have a link to the GitHub Action run and have the following custom values attached:
 
-![tag](src/docs/images/build-scan-tag.png "Build Scan tag")
+![tag](src/docs/images/build-scan-info.png "Build Scan info")
 
-![tag](src/docs/images/build-scan-values.png "Build Scan tag")
+![tag](src/docs/images/build-scan-values.png "Build Scan values")
 
 https://scans.gradle.com/s/o5bk2fu3zwm3y
 
