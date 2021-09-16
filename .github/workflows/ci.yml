@@ -26,9 +26,11 @@ jobs:
                     java-version: 1.8
 
             -   name: "./gradlew build"
-                uses: eskatos/gradle-command-action@v1
+                uses: gradle/gradle-build-action@v1
                 with:
-                    arguments: --scan --no-build-cache build
+                    arguments: --scan build
+                    distributions-cache-enabled: true
+                    dependencies-cache-enabled: true
                 env:
                     CI: true
 
