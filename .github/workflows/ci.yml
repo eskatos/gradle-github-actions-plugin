@@ -28,7 +28,7 @@ jobs:
             -   name: "./gradlew build"
                 uses: gradle/gradle-build-action@v2.0-beta.1
                 with:
-                    arguments: --scan build
+                    arguments: --scan --no-daemon build
                 env:
                     CI: true
 
