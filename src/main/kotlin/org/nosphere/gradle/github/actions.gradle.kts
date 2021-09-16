@@ -43,7 +43,7 @@ fun applyBuildScanConfiguration(buildScanExtension: Any) {
     bfMethod.invoke(buildScanExtension, object : Action<Any> {
         override fun execute(bsExt: Any) {
             tagMethod.invoke(buildScanExtension, "${prefix}action")
-            buildScanValues.forEach { (name, valueProvider) ->
+            buildScanValues.filter { it.value.isPresent }.forEach { (name, valueProvider) ->
                 valueMethod.invoke(buildScanExtension, name, valueProvider.get())
             }
             linkMethod.invoke(buildScanExtension, "${prefix}run", runUrl.get())
@@ -62,6 +62,5 @@ fun GithubActionsExtension.buildScanValues(prefix: String): Map<String, Provider
         "sha" to environment.sha,
         "ref" to environment.ref
     )
-    return providerByName.filter { it.value.isPresent }
-        .mapKeys { (name, _) -> "${prefix}$name" }
+    return providerByName.mapKeys { (name, _) -> "${prefix}$name" }
 }
