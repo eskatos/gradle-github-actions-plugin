@@ -25,7 +25,7 @@ If you have the Gradle Enterprise or Gradle Build Scan plugin applied, or use `-
 
 ![tag](src/docs/images/build-scan-values.png "Build Scan values")
 
-https://scans.gradle.com/s/o5bk2fu3zwm3y
+https://scans.gradle.com/s/iputsr55ifwtq
 
 You can disable that or change the tag and values prefix:
 
