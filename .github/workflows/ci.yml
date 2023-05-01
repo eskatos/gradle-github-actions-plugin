@@ -27,7 +27,7 @@ jobs:
                     distribution: temurin
 
             -   name: "./gradlew build"
-                uses: gradle/gradle-build-action@v2.0-beta.1
+                uses: gradle/gradle-build-action@v2.4.2
                 with:
                     arguments: --scan --no-daemon build
                 env:
