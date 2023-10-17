@@ -21,8 +21,10 @@ pluginBundle {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
+    }
+    withSourcesJar()
 }
 
 kotlinDslPluginOptions {
@@ -41,20 +43,4 @@ dependencies {
 tasks.validatePlugins {
     failOnWarning.set(true)
     enableStricterValidation.set(true)
-}
-
-val sourcesJar by tasks.registering(Jar::class) {
-    group = JavaBasePlugin.DOCUMENTATION_GROUP
-    description = "Assembles sources JAR"
-    archiveClassifier.set("sources")
-    from(sourceSets.main.map { it.allSource })
-    from(layout.buildDirectory.dir("generated-sources/kotlin-dsl-plugins/kotlin"))
-}
-
-publishing {
-    publications {
-        register<MavenPublication>("pluginMaven") {
-            artifact(sourcesJar.get())
-        }
-    }
 }
