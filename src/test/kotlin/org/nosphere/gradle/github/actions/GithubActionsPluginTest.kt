@@ -359,7 +359,7 @@ class GithubActionsPluginTest(testMatrix: TestMatrix) : AbstractPluginTest(testM
         withSettingsScript(
             """
                 plugins {
-                    id("com.gradle.enterprise") version "3.6.4"
+                    id("com.gradle.enterprise") version "3.15.1"
                 }
             """
         )
