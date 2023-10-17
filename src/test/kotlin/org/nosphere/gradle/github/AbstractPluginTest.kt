@@ -38,9 +38,10 @@ abstract class AbstractPluginTest(
         @Parameterized.Parameters(name = "{0}")
         @JvmStatic
         fun testMatrix() = listOf(
-            TestMatrix("7.2", true),
-            TestMatrix("6.8.3", true),
-            TestMatrix("6.1", false),
+            TestMatrix("8.4", true),
+            TestMatrix("8.0", true),
+            TestMatrix("7.6.3", true),
+            TestMatrix("7.4", true),
         )
     }
 
