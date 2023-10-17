@@ -78,7 +78,7 @@ class GithubActionsEnvironment internal constructor(
     private
     fun envString(env: String) =
         if (GradleVersion.current().baseVersion >= GradleVersion.version("6.5")) {
-            providers.environmentVariable(env).forUseAtConfigurationTime()
+            providers.environmentVariable(env)
         } else {
             providers.environmentVariable(env)
         }
