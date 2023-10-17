@@ -10,7 +10,7 @@ Also see the [Gradle Command](https://github.com/marketplace/actions/gradle-buil
 
 ```kotlin
 plugins {
-    id("org.nosphere.gradle.github.actions") version "1.3.2"
+    id("org.nosphere.gradle.github.actions") version "1.4.0"
 }
 
 // for example:
@@ -38,9 +38,10 @@ githubActions.buildScan {
 
 ## Compatibility matrix
 
-| Plugin | Min Java | Min Gradle | Max Gradle | Build Scan | Configuration Cache
-| --- | --- | --- | --- | --- | ---
-| `1.3.x` | `1.8` | `6.1` | `7.x` | `>= 3.0` | 🟢
-| `1.2.x` | `1.8` | `6.1` | `7.x` | `>= 3.0` | 🟢
-| `1.1.x` | `1.8` | `5.2` | `6.x` | `>= 1.1` | 🔴
-| `1.0.x` | `1.8` | `5.2` | `6.x` | `>= 1.1` | 🔴
+| Plugin  | Min Java | Min Gradle | Max Gradle | Build Scan | Configuration Cache
+|---------| --- |------------|------------| --- | ---
+| `1.4.x` | `1.8` | `7.4`      | `8.x`      | `>= 3.0` | 🟢
+| `1.3.x` | `1.8` | `6.1`      | `7.x`      | `>= 3.0` | 🟢
+| `1.2.x` | `1.8` | `6.1`      | `7.x`      | `>= 3.0` | 🟢
+| `1.1.x` | `1.8` | `5.2`      | `6.x`      | `>= 1.1` | 🔴
+| `1.0.x` | `1.8` | `5.2`      | `6.x`      | `>= 1.1` | 🔴
